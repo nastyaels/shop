@@ -1,10 +1,10 @@
-package com.eliseeva.shop.goods;
-
+package com.eliseeva.shop.purchase;
+import com.eliseeva.shop.goods.CakeEntity;
+import com.eliseeva.shop.orders.OrderEntity;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -12,35 +12,32 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@Table(name = "CAKE")
-public class CakeEntity {
+@Table(name = "PURCHASE")
+public class PurchaseEntity {
     @Setter(AccessLevel.NONE)
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
+    private @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
     @Setter(AccessLevel.PROTECTED)
-    @Column(name = "name")
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(nullable = false)
+    private CakeEntity cake;
 
     @Setter(AccessLevel.PROTECTED)
-    private BigDecimal calories;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(nullable = false)
+    private OrderEntity order;
 
     @Setter(AccessLevel.PROTECTED)
-    private String image;
-
-    @Setter(AccessLevel.PROTECTED)
-    private BigDecimal price;
-
-    @Setter(AccessLevel.PROTECTED)
-    private BigDecimal weight;
-
-    @Setter(AccessLevel.PROTECTED)
-    private String ingredients;
+    private Integer number;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        CakeEntity that = (CakeEntity) o;
+        PurchaseEntity that = (PurchaseEntity) o;
         return id != null && Objects.equals(id, that.id);
     }
 

@@ -1,10 +1,12 @@
 package com.eliseeva.shop.rest.controller;
 
-import com.eliseeva.shop.goods.CakesServiceImpl;
-import com.eliseeva.shop.rest.dto.Cake;
-import com.eliseeva.shop.rest.dto.Cakes;
-import com.eliseeva.shop.exceptions.CakeNotFoundException;
-import com.eliseeva.shop.rest.dto.InfoAboutCake;
+import com.eliseeva.shop.goods.CakesService;
+import com.eliseeva.shop.orders.OrderEntity;
+import com.eliseeva.shop.orders.OrderService;
+import com.eliseeva.shop.purchase.PurchaseService;
+import com.eliseeva.shop.rest.dto.*;
+import com.eliseeva.shop.users.UserEntity;
+import com.eliseeva.shop.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,45 +21,27 @@ import java.util.List;
 @Validated
 @RestController
 public class CakeController {
+    private final CakesService cakesService;
+    private final PurchaseService purchaseService;
+    private final UserService userService;
+    private final OrderService orderService;
+
     private static long idCounter = 0;
-    private final CakesServiceImpl cakesService;
     private final Cakes cakeList = new Cakes();
 
-//    public CakeController(){
-//        Cake cake1 = new Cake();
-//        idCounter++;
-//        cake1.setId(1L);
-//        cake1.setName("medovik");
-//        cake1.setPrice(new BigDecimal(1000));
-//        cake1.setCalories(new BigDecimal(1800));
-//        cake1.setWeight(new BigDecimal(500));
-//        cake1.setImage("cake1.jpg");
-//
-//        Cake cake2 = new Cake();
-//        idCounter++;
-//        cake2.setId(idCounter);
-//        cake2.setName("Rose");
-//        cake2.setPrice(new BigDecimal(200));
-//        cake2.setWeight(new BigDecimal(200));
-//        cake2.setImage("cake1.jpg");
-//        cake2.setCalories(new BigDecimal(200));
-//
-//        List<Cake> tmp = new ArrayList<Cake>();
-//        tmp.add(cake1);
-//        tmp.add(cake2);
-//        cakeList.setCakeList(tmp);
-//    }
-
-
     @Autowired
-    public CakeController(CakesServiceImpl cakesService) {
+    public CakeController(CakesService cakesService, PurchaseService purchaseService, OrderService orderService, UserService userService) {
         List<Cake> tmp = new ArrayList<Cake>();
         cakeList.setCakeList(tmp);
         this.cakesService = cakesService;
+        this.purchaseService = purchaseService;
+        this.orderService = orderService;
+        this.userService = userService;
+
     }
 
-    @GetMapping(value = "cakes",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cakes getListOfCakes(){
+    @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Cakes getListOfCakes() {
         return cakesService.getCakes();
     }
 
@@ -67,14 +51,23 @@ public class CakeController {
     }
 
     @PostMapping(path = "cakes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cake> addCake(@RequestBody @Valid Cake mcake){
-        if(mcake.getId() == null || mcake.getCalories() == null ||
+    public ResponseEntity<Cake> addCake(@RequestBody @Valid Cake mcake) {
+        if (mcake.getId() == null || mcake.getCalories() == null ||
                 mcake.getImage() == null || mcake.getName() == null || mcake.getWeight() == null || mcake.getPrice() == null) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
-        else {
+        } else {
             cakeList.getCakeList().add(mcake);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
+
+    @PostMapping(path = "addNewOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<InfoAboutOrder> addOrder(@RequestBody @Valid InfoAboutOrder mOrder) {
+        UserEntity user = userService.addUser(mOrder.getUser());
+        OrderEntity order = orderService.addNewOrder(mOrder.getOrder(), user);
+        for (Purchase purchase : mOrder.getPurchases())
+            purchaseService.addPurchase(order, cakesService.getCakeEntity(purchase.getCakeId()), purchase.getNumber());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }
