@@ -59,3 +59,6 @@ components:
         weight:
           type: number
           description: Cake weight
+        ingredients:
+          type: string
+          description: Cake's ingredients
