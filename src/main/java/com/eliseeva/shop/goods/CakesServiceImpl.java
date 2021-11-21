@@ -51,4 +51,13 @@ public class CakesServiceImpl implements CakesService{
             return infoAboutCake;
         }).orElseThrow(()-> new CakeNotFoundException("no info about this cake"));
     }
+    @Override
+    public CakeEntity getCakeEntity(Long id){
+        return cakeRepository.findById(id).get();
+    }
+
+    @Override
+    public void addCake(InfoAboutCake cake){
+        CakeEntity cakeEntity = new CakeEntity();
+    }
 }
