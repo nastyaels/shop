@@ -39,46 +39,48 @@
             }
           }
         }
-      },
-      "post": {
-        "tags": [
-          "cake-controller"
-        ],
-        "operationId": "addCake",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Cake"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "OK",
+      }
+    },
+      "/addCake": {
+        "post": {
+          "tags": [
+            "cake-controller"
+          ],
+          "operationId": "addCake",
+          "requestBody": {
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Cake"
+                  "$ref": "#/components/schemas/InfoAboutCake"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "404": {
+              "description": "Not Found",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Cake"
+                  }
                 }
               }
             }
           }
         }
-      }
-    },
+      },
     "/cake/{id}": {
       "get": {
         "tags": [
@@ -182,7 +184,8 @@
           "image",
           "name",
           "price",
-          "weight"
+          "weight",
+          "ingredients"
         ],
         "type": "object",
         "properties": {

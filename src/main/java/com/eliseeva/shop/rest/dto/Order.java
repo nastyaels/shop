@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @Schema(description = "Information about purchase")
 @Validated
-public class Order {
+public class Order{
     @Null
     @Schema(description = "id",required = false)
     @JsonProperty("id")
@@ -46,8 +46,8 @@ public class Order {
     @JsonProperty("deliveryAddress")
     private String deliveryAddress;
 
-    @NotNull
     @Schema(description = "time of delivery",required = true)
     @JsonProperty("deliveryTime")
     private LocalDateTime deliveryDate;
+
 }

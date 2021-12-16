@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Information about cake</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p><b>Name: </b> <p th:text="${cake.name}"></p></p>
+<p><b>Price: </b> <p th:text="${cake.price}+' rub'"></p></p>
+<p><b>Calories: </b> <p th:text="${cake.calories}+' calories'"></p></p>
+<p><b>Image: </b> <p th:text="${cake.image}"></p></p>
+<p><b>Weight: </b> <p th:text="${cake.weight}+' gramms'"></p></p>
+<p><b>Ingredients: </b> <p th:text="${cake.ingredients}"></p></p>
+</body>
+</html>

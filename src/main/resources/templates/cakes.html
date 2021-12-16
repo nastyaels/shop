@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Cakes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<table>
+<tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Calories</th>
+    <th>Image</th>
+    <th>Weight</th>
+</tr>
+<th:block th:each="cake:${cakes}">
+    <tr>
+    <td th:text="${cake.name}"> </td>
+    <td th:text="${cake.price}"> </td>
+    <td th:text="${cake.calories}"> </td>
+    <td th:text="${cake.image}"> </td>
+    <td th:text="${cake.weight}"> </td>
+    <td>
+        <a th:href="@{'/admin/cake/'+${cake.id}}">
+            <button type="button">more about</button>
+        </a>
+        <form action="#" th:action="@{'/admin/editCake/'+${cake.id}}"  method="get">
+            <input type="submit" value="edit" />
+        </form>
+        <a th:href="@{'/admin/deleteCake/'+${cake.id}}" class="btn btn-danger">
+            <button type="button">delete</button>
+        </a>
+    </td>
+
+    </tr>
+</th:block>
+</table>
+<form action="/admin/addCake" method="post" th:object="${cake}">
+    <input name="name" type="text" placeholder="Name">
+    <input name="price" type="text" placeholder="Price">
+    <input name="calories" type="text" placeholder="Calories">
+    <input name="image" type="text" placeholder="Image">
+    <input name="weight" type="text" placeholder="Weight">
+    <input name="ingredients" type="text" placeholder="Ingredients">
+    <input type="submit" value="Add cake">
+</form>
+</body>
+</html>

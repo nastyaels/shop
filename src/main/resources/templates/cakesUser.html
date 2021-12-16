@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Cakes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Calories</th>
+        <th>Image</th>
+        <th>Weight</th>
+    </tr>
+    <th:block th:each="cake:${cakes}">
+        <tr>
+            <td th:text="${cake.name}"> </td>
+            <td th:text="${cake.price}"> </td>
+            <td th:text="${cake.calories}"> </td>
+            <td th:text="${cake.image}"> </td>
+            <td th:text="${cake.weight}"> </td>
+            <td>
+                <a th:href="@{'/user/cake/'+${cake.id}}">
+                    <button type="button">more about</button>
+                </a>
+            </td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

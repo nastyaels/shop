@@ -26,10 +26,10 @@ public class CakesServiceImpl implements CakesService{
         List<Cake> cakeList =  cakeEntityList.stream().map(c -> {
             Cake cake = new Cake();
             cake.setId(c.getId());
-            cake.setCalories(c.getCalories());
             cake.setName(c.getName());
-            cake.setPrice(c.getPrice());
             cake.setImage(c.getImage());
+            cake.setCalories(c.getCalories());
+            cake.setPrice(c.getPrice());
             cake.setWeight(c.getWeight());
             return cake;
         }).collect(Collectors.toList());
@@ -57,7 +57,37 @@ public class CakesServiceImpl implements CakesService{
     }
 
     @Override
-    public void addCake(InfoAboutCake cake){
+    public CakeEntity addCake(InfoAboutCake cake){
+
         CakeEntity cakeEntity = new CakeEntity();
+
+        cakeEntity.setWeight(cake.getWeight());
+        cakeEntity.setCalories(cake.getCalories());
+        cakeEntity.setImage(cake.getImage());
+        cakeEntity.setPrice(cake.getPrice());
+        cakeEntity.setIngredients(cake.getIngredients());
+        cakeEntity.setName(cake.getName());
+
+        return cakeRepository.saveAndFlush(cakeEntity);
+    }
+
+    @Override
+    public void deleteCakeById(Long id){
+
+        cakeRepository.deleteById(id);
+    }
+
+    @Override
+    public void editCake(InfoAboutCake cake){
+        CakeEntity cakeEntity = cakeRepository.getById(cake.getId());
+
+        cakeEntity.setWeight(cake.getWeight());
+        cakeEntity.setCalories(cake.getCalories());
+        cakeEntity.setImage(cake.getImage());
+        cakeEntity.setPrice(cake.getPrice());
+        cakeEntity.setIngredients(cake.getIngredients());
+        cakeEntity.setName(cake.getName());
+
+        cakeRepository.saveAndFlush(cakeEntity);
     }
 }
