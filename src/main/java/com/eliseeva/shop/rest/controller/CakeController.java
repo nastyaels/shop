@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +20,14 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-@Validated
-@RestController
+@Controller
+@RequestMapping(value = "/user")
 public class CakeController {
     private final CakesService cakesService;
     private final PurchaseService purchaseService;
     private final UserService userService;
     private final OrderService orderService;
 
-    private static long idCounter = 0;
     private final Cakes cakeList = new Cakes();
 
     @Autowired
@@ -40,34 +41,17 @@ public class CakeController {
 
     }
 
-    @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cakes getListOfCakes() {
-        return cakesService.getCakes();
+    @GetMapping(value = "/cakes")
+    public String getListOfCakes(Model model) {
+        model.addAttribute("cakes",cakesService.getCakes().getCakeList());
+        model.addAttribute("cake", new InfoAboutCake());
+        return "cakesUser";
     }
 
-    @GetMapping(value = "cake/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public InfoAboutCake getCakeById(@PathVariable Long id) {
-        return cakesService.getInfoAboutCake(id);
-    }
-
-    @PostMapping(path = "cakes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cake> addCake(@RequestBody @Valid Cake mcake) {
-        if (mcake.getId() == null || mcake.getCalories() == null ||
-                mcake.getImage() == null || mcake.getName() == null || mcake.getWeight() == null || mcake.getPrice() == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        } else {
-            cakeList.getCakeList().add(mcake);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        }
-    }
-
-    @PostMapping(path = "addNewOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<InfoAboutOrder> addOrder(@RequestBody @Valid InfoAboutOrder mOrder) {
-        UserEntity user = userService.addUser(mOrder.getUser());
-        OrderEntity order = orderService.addNewOrder(mOrder.getOrder(), user);
-        for (Purchase purchase : mOrder.getPurchases())
-            purchaseService.addPurchase(order, cakesService.getCakeEntity(purchase.getCakeId()), purchase.getNumber());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @GetMapping(value = "cake/{id}")
+    public String getCakeById(@PathVariable Long id, Model model) {
+        model.addAttribute("cake",cakesService.getInfoAboutCake(id));
+        return "cake";
     }
 
 }

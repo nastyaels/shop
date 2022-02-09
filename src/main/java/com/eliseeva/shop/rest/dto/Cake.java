@@ -29,7 +29,7 @@ public class Cake {
     private BigDecimal calories;
 
     @NotNull
-    @Schema(description = "Relative url of cake image", required = true)
+    @Schema(description = "Relative url of cake image", required = false)
     @JsonProperty("image")
     private String image;
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Edit Cake</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form action="/admin/editOrder" method="post" th:object="${order}">
+
+    <input th:field="*{id}" type="text" readonly>
+    <input th:field="*{delivery}" type="text" placeholder="Delivery(NEED, NO)">
+    <input th:field="*{deliveryAddress}" type="text" placeholder="Address">
+    <input th:field="*{deliveryDate}" type="datetime-local" placeholder="Date">
+    <input th:field="*{orderStatus}" type="text" placeholder="Status(NEW,CANCELED,PERFORMED,FINISHED)">
+    <input th:field="*{payment}" type="text" placeholder="Payment(ONLINE, CASH)">
+
+    <input type="submit" value="Save changes">
+</form>
+</body>
+</html>

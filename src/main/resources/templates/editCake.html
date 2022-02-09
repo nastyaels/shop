@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Edit Cake</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<form action="/admin/editCake" method="post" th:object="${cake}">
+    <input th:field="*{id}" type="text" readonly>
+    <input th:field="*{name}" type="text" placeholder="Name">
+    <input th:field="*{price}" type="text" placeholder="Price">
+    <input th:field="*{calories}" type="text" placeholder="Calories">
+    <input th:field="*{image}" type="text" placeholder="Image">
+    <input th:field="*{weight}" type="text" placeholder="Weight">
+    <input th:field="*{ingredients}" type="text" placeholder="Ingredients">
+    <input type="submit" value="Save changes">
+</form>
+</body>
+</html>
