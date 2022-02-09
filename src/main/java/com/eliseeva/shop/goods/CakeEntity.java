@@ -9,12 +9,12 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@Setter(AccessLevel.PROTECTED)
 @ToString
 @RequiredArgsConstructor
 @Table(name = "CAKE")
 public class CakeEntity {
-    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.PROTECTED)
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
     @Setter(AccessLevel.PROTECTED)
