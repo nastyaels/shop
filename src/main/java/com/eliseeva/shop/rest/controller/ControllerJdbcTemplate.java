@@ -1,22 +1,23 @@
 package com.eliseeva.shop.rest.controller;
+
 import com.eliseeva.shop.goods.CakesService;
-import com.eliseeva.shop.rest.dto.Cake;
-import com.eliseeva.shop.rest.dto.Cakes;
-import com.eliseeva.shop.rest.dto.InfoAboutCake;
+import com.eliseeva.shop.orders.OrderService;
+import com.eliseeva.shop.rest.dto.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
-@RequestMapping(value = "/cakes_jdbc")
-public class CakeControllerJdbc {
+@RequestMapping(value = "/cakes_jdbc_t")
+public class ControllerJdbcTemplate {
+
     private final CakesService cakesService;
-
+    private final OrderService orderService;
     @Autowired
-    public CakeControllerJdbc(CakesService cakesService) {
+    public ControllerJdbcTemplate(CakesService cakesService, OrderService orderService) {
         this.cakesService = cakesService;
+        this.orderService = orderService;
     }
-
     @PostMapping()
     public void addCake(@RequestBody InfoAboutCake cake){
         cakesService.addCake(cake);
@@ -37,5 +38,10 @@ public class CakeControllerJdbc {
     @DeleteMapping("/{id}")
     public void deleteCakeById(@PathVariable Long id){
         cakesService.deleteCakeById(id);
+    }
+
+    @PostMapping("/order")
+    public void addOrder(@RequestBody Order order){
+        orderService.addNewOrder(order);
     }
 }

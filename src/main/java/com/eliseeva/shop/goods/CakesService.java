@@ -10,7 +10,5 @@ public interface CakesService {
     Cake getCakeById(Long id);
     void addCake(InfoAboutCake cake);
     void deleteCakeById(Long id);
-    void editCake(Long id, InfoAboutCake cake);
-//    InfoAboutCake getInfoAboutCake(Long id);
-//    CakeEntity getCakeEntity(Long id);
+    void editCake(Long id,InfoAboutCake cake);
 }

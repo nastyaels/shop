@@ -1,4 +1,6 @@
 package com.eliseeva.shop.goods;
+
+import com.eliseeva.shop.exceptions.CakeNotFoundException;
 import com.eliseeva.shop.rest.dto.Cake;
 import com.eliseeva.shop.rest.dto.Cakes;
 import com.eliseeva.shop.rest.dto.InfoAboutCake;
@@ -9,17 +11,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+
 public class CakesServiceImpl implements CakesService{
-//    private final CakeRepository cakeRepository;
 
     private final CakeDAO cakeDAO;
+
     @Autowired
-    public CakesServiceImpl (CakeDAO cakeDAO){
+    public CakesServiceImpl(CakeDAO cakeDAO) {
         this.cakeDAO = cakeDAO;
     }
-//    public CakesServiceImpl(CakeRepository cakeRepository) {
-//        this.cakeRepository = cakeRepository;
-//    }
 
     @Override
     public Cakes getCakes(){
@@ -40,35 +40,17 @@ public class CakesServiceImpl implements CakesService{
     }
 
     @Override
-    public Cake getCakeById(Long id) {
+    public Cake getCakeById(Long id){
         var mcake = cakeDAO.getCakeById(id);
         var cake = new Cake();
         cake.setId(mcake.getId());
-        cake.setWeight(mcake.getWeight());
-        cake.setName(mcake.getName());
-        cake.setPrice(mcake.getPrice());
         cake.setCalories(mcake.getCalories());
         cake.setImage(mcake.getImage());
+        cake.setName(mcake.getName());
+        cake.setPrice(mcake.getPrice());
+        cake.setWeight(mcake.getWeight());
         return cake;
     }
-//    @Override
-//    public InfoAboutCake getInfoAboutCake(Long id){
-//        return cakeDAO.getCakeById(id).map(c ->{
-//            InfoAboutCake infoAboutCake = new InfoAboutCake();
-//            infoAboutCake.setId(c.getId());
-//            infoAboutCake.setCalories(c.getCalories());
-//            infoAboutCake.setImage(c.getImage());
-//            infoAboutCake.setName(c.getName());
-//            infoAboutCake.setPrice(c.getPrice());
-//            infoAboutCake.setWeight(c.getWeight());
-//            infoAboutCake.setIngredients(c.getIngredients());
-//            return infoAboutCake;
-//        }).orElseThrow(()-> new CakeNotFoundException("no info about this cake"));
-//    }
-//    @Override
-//    public CakeEntity getCakeEntity(Long id){
-//        return cakeRepository.findById(id).get();
-//    }
 
     @Override
     public void addCake(InfoAboutCake cake){
@@ -81,7 +63,7 @@ public class CakesServiceImpl implements CakesService{
     }
 
     @Override
-    public void editCake(Long id, InfoAboutCake cake){
+    public void editCake(Long id,InfoAboutCake cake){
         cakeDAO.editCake(id,cake);
     }
 }
