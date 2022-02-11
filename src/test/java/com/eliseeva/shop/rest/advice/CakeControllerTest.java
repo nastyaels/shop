@@ -1,18 +1,18 @@
-package com.eliseeva.shop.rest.advice;
-
-import com.eliseeva.shop.goods.CakesService;
-import com.eliseeva.shop.rest.controller.CakeController;
-import com.eliseeva.shop.rest.dto.Cakes;
-import com.eliseeva.shop.rest.dto.InfoAboutCake;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.springframework.test.util.AssertionErrors;
-
-import static org.mockito.ArgumentMatchers.any;
-
-public class CakeControllerTest {
-
+//package com.eliseeva.shop.rest.advice;
+//
+//import com.eliseeva.shop.goods.CakesService;
+//import com.eliseeva.shop.rest.controller.CakeController;
+//import com.eliseeva.shop.rest.dto.Cakes;
+//import com.eliseeva.shop.rest.dto.InfoAboutCake;
+//import org.junit.jupiter.api.Test;
+//import org.mockito.ArgumentCaptor;
+//import org.mockito.Mockito;
+//import org.springframework.test.util.AssertionErrors;
+//
+//import static org.mockito.ArgumentMatchers.any;
+//
+//public class CakeControllerTest {
+//
 //    @Test
 //    void testCakes(){
 //        Cakes cakes = new Cakes();
@@ -37,4 +37,4 @@ public class CakeControllerTest {
 //        Mockito.verify(cakesService,Mockito.times(1)).getInfoAboutCake(argumentCaptor.capture());
 //        AssertionErrors.assertEquals("",argumentCaptor.getValue(),1L);
 //    }
-}
+//}

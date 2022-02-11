@@ -13,16 +13,17 @@ import java.util.stream.Collectors;
 @Service
 
 public class CakesServiceImpl implements CakesService{
-    private final CakeRepository cakeRepository;
+
+    private final CakeDAO cakeDAO;
 
     @Autowired
-    public CakesServiceImpl(CakeRepository cakeRepository) {
-        this.cakeRepository = cakeRepository;
+    public CakesServiceImpl(CakeDAO cakeDAO) {
+        this.cakeDAO = cakeDAO;
     }
 
     @Override
     public Cakes getCakes(){
-        List<CakeEntity> cakeEntityList = cakeRepository.findAll();
+        List<CakeEntity> cakeEntityList = cakeDAO.getListOfCakes();
         List<Cake> cakeList =  cakeEntityList.stream().map(c -> {
             Cake cake = new Cake();
             cake.setId(c.getId());
@@ -37,57 +38,32 @@ public class CakesServiceImpl implements CakesService{
         cakes.setCakeList(cakeList);
         return cakes;
     }
+
     @Override
-    public InfoAboutCake getInfoAboutCake(Long id){
-        return cakeRepository.findById(id).map(c ->{
-            InfoAboutCake infoAboutCake = new InfoAboutCake();
-            infoAboutCake.setId(c.getId());
-            infoAboutCake.setCalories(c.getCalories());
-            infoAboutCake.setImage(c.getImage());
-            infoAboutCake.setName(c.getName());
-            infoAboutCake.setPrice(c.getPrice());
-            infoAboutCake.setWeight(c.getWeight());
-            infoAboutCake.setIngredients(c.getIngredients());
-            return infoAboutCake;
-        }).orElseThrow(()-> new CakeNotFoundException("no info about this cake"));
-    }
-    @Override
-    public CakeEntity getCakeEntity(Long id){
-        return cakeRepository.findById(id).get();
+    public Cake getCakeById(Long id){
+        var mcake = cakeDAO.getCakeById(id);
+        var cake = new Cake();
+        cake.setId(mcake.getId());
+        cake.setCalories(mcake.getCalories());
+        cake.setImage(mcake.getImage());
+        cake.setName(mcake.getName());
+        cake.setPrice(mcake.getPrice());
+        cake.setWeight(mcake.getWeight());
+        return cake;
     }
 
     @Override
-    public CakeEntity addCake(InfoAboutCake cake){
-
-        CakeEntity cakeEntity = new CakeEntity();
-
-        cakeEntity.setWeight(cake.getWeight());
-        cakeEntity.setCalories(cake.getCalories());
-        cakeEntity.setImage(cake.getImage());
-        cakeEntity.setPrice(cake.getPrice());
-        cakeEntity.setIngredients(cake.getIngredients());
-        cakeEntity.setName(cake.getName());
-
-        return cakeRepository.saveAndFlush(cakeEntity);
+    public void addCake(InfoAboutCake cake){
+        cakeDAO.addCake(cake);
     }
 
     @Override
     public void deleteCakeById(Long id){
-
-        cakeRepository.deleteById(id);
+        cakeDAO.deleteCakeById(id);
     }
 
     @Override
-    public void editCake(InfoAboutCake cake){
-        CakeEntity cakeEntity = cakeRepository.getById(cake.getId());
-
-        cakeEntity.setWeight(cake.getWeight());
-        cakeEntity.setCalories(cake.getCalories());
-        cakeEntity.setImage(cake.getImage());
-        cakeEntity.setPrice(cake.getPrice());
-        cakeEntity.setIngredients(cake.getIngredients());
-        cakeEntity.setName(cake.getName());
-
-        cakeRepository.saveAndFlush(cakeEntity);
+    public void editCake(Long id,InfoAboutCake cake){
+        cakeDAO.editCake(id,cake);
     }
 }
